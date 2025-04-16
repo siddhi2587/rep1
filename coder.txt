@@ -1,4 +1,9 @@
-docker network create mongo-network
+#4
+docker images
+ docker tag my-node-app:latest siddhi5/my-node-app
+docker login
+ docker push siddhi5/my-node-app
+1}docker network create mongo-network
 
 docker ps
 
