@@ -1,0 +1,86 @@
+shell
+1)nano backup.sh
+
+#!/bin/bash
+SOURCE="/home/ubuntu/devops"
+DESTINATION="/home/ubuntu/back/"
+DATE=$(date +%Y-%m-%d_%H-%M-%S)  # Corrected: %S for seconds, added an underscore between date and time
+# Create backup directory and copy files
+mkdir -p $DESTINATION/$DATE
+cp -r $SOURCE $DESTINATION/$DATE
+echo "Backup completed on $DATE"
+
+ chmod +x backup.sh
+ sudo ./backup.sh
+ 2)$ nano check_sysstat.sh
+
+#!/bin/bash
+
+SERVICE="sysstat.service"
+
+if systemctl is-active --quiet "$SERVICE"; then
+    echo "$SERVICE is running."
+else
+    echo "$SERVICE is not running. Starting it..."
+    systemctl start "$SERVICE" && echo "$SERVICE started successfully." || echo "Failed to start $SERVICE."
+fi
+
+
+chmod +x check_sysstat.sh
+./check_sysstat.sh
+
+3)nano ping_results.sh
+
+#!/bin/bash
+
+# Define variables
+HOST="google.com"
+OUTPUT_FILE="ping_results.log"
+
+# Ping the host once and check if it's reachable
+if ping -c 1 "$HOST" &> /dev/null; then
+    echo "$(date): $HOST is reachable" >> "$OUTPUT_FILE"
+else
+    echo "$(date): $HOST is not reachable" >> "$OUTPUT_F$
+fi
+
+ chmod +x ping_results.sh
+./ping_results.sh
+cat ping_results.log
+4)nano list_ports.sh
+
+#!/bin/bash
+
+# Show all listening TCP and UDP ports with process info
+echo "Listing all TCP and UDP listening ports with assoc$
+sudo netstat -tulnp | grep LISTEN
+
+chmod +x list_ports.sh
+./list_ports.sh
+
+5)nano top_memory_processes.sh
+
+#!/bin/bash
+
+echo "$(ps aux --sort=-%mem | head -n 11)" >> "memory_usage.log"
+
+
+
+chmod +x top_memory_processes.sh
+./top_memory_processes.sh
+cat memory_usage.log
+
+6) nano log_uptime.sh
+
+#!/bin/bash
+
+# Define the output file
+OUTPUT_FILE="system_uptime.log"
+
+# Append the current date and uptime to the file
+echo "$(date): $(uptime -p)" >> "$OUTPUT_FILE"
+
+
+chmod +x log_uptime.sh
+./log_uptime.sh
+cat system_uptime.log
