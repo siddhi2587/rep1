@@ -1,0 +1,101 @@
+docker network create mongo-network
+
+docker ps
+
+docker stop <container_name_or_id>
+docker rm <container_name_or_id>
+
+docker run --name mongodb \
+  -p 27018:27017 \
+  -e MONGO_INITDB_ROOT_USERNAME=admin \
+  -e MONGO_INITDB_ROOT_PASSWORD=password \
+  --net mongo-network \
+  -d mongo
+
+docker ps
+sudo apt update
+sudo apt install mongodb-clients
+
+mongo -u admin -p password --authenticationDatabase admin --host localhost --port 27018
+
+
+> show dbs
+> use mydb
+> db.test.insert({ name: "MYDB", role: "Assistant" })
+> db.test.find()
+Q2
+ docker network create mongo-nett
+
+docker run -d \
+  --name mongodb \
+  --network mongo-nett \
+  -e MONGO_INITDB_ROOT_USERNAME=admin \
+  -e MONGO_INITDB_ROOT_PASSWORD=password \
+  -p 27017:27017 \
+  mongo
+
+ docker ps
+
+#http://localhost:portno
+
+Q3yml
+nano docker-compose.yml
+
+version: '3'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    ports:
+      - "27017:27017"
+    networks:
+      - mongo-net
+    restart: always
+
+networks:
+  mongo-net:
+    driver: bridge
+
+$docker-compose up -d
+
+#if container already running
+docker rm -f mongodb
+docker-compose up -d
+ #3b
+mkdir mongo-app
+cd mongo-app
+nano docker-compose.yml
+
+version: '3.3'
+
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_MONGODB_SERVER: mongodb
+
+docker-compose up -d
+
+docker ps
+
+http://localhost:8081
+
+
+
