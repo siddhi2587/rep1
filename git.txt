@@ -1,0 +1,55 @@
+1)git clone https://github.com/siddhi2587/git.git
+2)echo "# Git Assignment" > README.md
+dir
+git add README.md
+git status
+git commit -m "Added README.md with repository purpose"
+3)git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+git config --global --list
+4)
+git pull origin main
+make index.html
+git add README.md index.html
+git status
+git commit -m "Added index.html and updated README.md"
+git push --set-upstream origin main
+
+2)git init
+Create or modify the README.md file in VS Code
+git add README.md
+git commit -m "C0: Added h1 tag to README.md"
+Create a new .txt file i
+git add newfile.txt
+git commit -m "C1: Created a new text file"
+Modify the contents of newfile.txt
+git add newfile.txt
+git commit -m "C2: Modified newfile.txt"
+Push the Changes to the Remote Repository
+git remote add origin https://github.com/username/repository.git
+git push origin main
+
+3)git checkout -b iss53
+Open VS Code, create index.html (if not already created), and update README.m
+git add README.md index.html
+git commit -m "C3: Created index.html and updated README.md in iss53"
+git log --oneline
+git diff abc5678 def9012
+git checkout iss53
+git diff main
+git push --set-upstream origin iss53
+4)git checkout -b hotfix
+ Edit newfile.txt
+Open newfile.txt in VS Code.
+git add newfile.txt
+git commit -m "C4: Updated newfile.txt in hotfix branch"
+git push --set-upstream origin hotfix
+git log --oneline
+
+5)git checkout main
+git merge hotfix
+git add .
+git commit
+git push origin main
+git branch -d hotfix
+git push origin --delete hotfix
