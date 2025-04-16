@@ -1,0 +1,130 @@
+1.tcp
+sudo apt update
+sudo apt install python3 python3-pip
+
+import socket
+import os
+
+# Define server host and port
+HOST = '0.0.0.0'  # Accept connections from any IP address
+PORT = 65432       # Port to listen on
+
+# Read uptime data from the TSV file
+def read_uptime_data():
+    try:
+        with open('uptime_data.tsv', 'r') as file:
+            return file.read()
+    except FileNotFoundError:
+        return "Uptime data file not found."
+
+# Create a TCP/IP socket
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
+    server_socket.bind((HOST, PORT))  # Bind the socket to the address and port
+    server_socket.listen()  # Listen for incoming connections
+
+    print(f"Server listening on {HOST}:{PORT}...")
+
+    # Accept a connection from a client
+    conn, addr = server_socket.accept()
+    with conn:
+        print(f"Connected by {addr}")
+        while True:
+            data = conn.recv(1024)  # Receive data from the client
+            if not data:
+                break  # If no data, close the connection
+
+            print("Request received, sending uptime data.")
+            uptime_data = read_uptime_data()
+            conn.sendall(uptime_data.encode())  # Send uptime data back to the client
+
+
+
+import socket
+
+# Define server host and port
+SERVER_HOST = 'YOUR_EC2_PUBLIC_IP'  # Replace with the EC2 public IP
+SERVER_PORT = 65432  # Same port as server
+
+# Create a TCP/IP socket
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+    client_socket.connect((SERVER_HOST, SERVER_PORT))  # Connect to the server
+
+    print("Connected to server... Fetching uptime data.")
+    
+    # Send request to server
+    client_socket.sendall(b"GET UPTIME")
+
+    # Receive the response from the server
+    data = client_socket.recv(1024)
+    print("Uptime Data received from server:")
+    print(data.decode())  # Print the received data
+
+python3 server.py
+python3 client.py
+
+2.udp
+import socket
+
+# Server settings
+HOST = '0.0.0.0'  # Accept connections from any IP address
+PORT = 65432       # Port to listen on (must be the same on both server and client)
+
+# Read uptime data from the file
+def read_uptime_data():
+    try:
+        with open('uptime_data.tsv', 'r') as file:
+            return file.read()
+    except FileNotFoundError:
+        return "Uptime data file not found."
+
+# Create a UDP socket
+with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as server_socket:
+    server_socket.bind((HOST, PORT))  # Bind the socket to the address and port
+    print(f"Server listening on {HOST}:{PORT}...")
+
+    while True:
+        # Receive message from the client
+        data, addr = server_socket.recvfrom(1024)  # Buffer size 1024 bytes
+        print(f"Received message from {addr}")
+
+        if data:
+            uptime_data = read_uptime_data()  # Read uptime data
+            server_socket.sendto(uptime_data.encode(), addr)  # Send uptime data back to the client
+
+
+import socket
+
+# Server settings
+SERVER_HOST = 'YOUR_EC2_PUBLIC_IP'  # Replace with the EC2 public IP
+SERVER_PORT = 65432  # Same port as server
+
+# Create a UDP socket
+with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as client_socket:
+    # Send a message to the server requesting uptime data
+    client_socket.sendto(b"GET UPTIME", (SERVER_HOST, SERVER_PORT))
+    
+    # Receive the response from the server
+    data, _ = client_socket.recvfrom(1024)  # Buffer size 1024 bytes
+    print("Uptime Data received from server:")
+    print(data.decode())  # Print the received data
+
+docker pull ubuntu:20.04
+docker images
+docker pull ubuntu:latest
+docker rmi ubuntu:latest
+docker run -dit --name ubuntu-os ubuntu:latest
+docker stop ubuntu-os
+docker restart ubuntu-os
+docker ps -a
+docker exec -d ubuntu-os mkdir /path
+docker exec ubuntu-os ls /home
+docker stop ubuntu os
+docker container prune -f
+
+docker pull postgres:latest
+docker run -d --name postres-user1 -e POSTGRES_PASSWORD=mysecetpassword postgres:latest
+docker exec -it postgres-user1 psql -U postgres
+CREATE DATABASE mydb;
+docker stop postgres-user1
+docker run postgres-user1
+
